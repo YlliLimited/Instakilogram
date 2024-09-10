@@ -1,0 +1,72 @@
+{% extends "layout/mainLayout.html" %} {% block title %} Instakilogram - Search
+{% endblock %} {% block content %}
+<div class="container my-5 py-5">
+    <div class="d-flex align-items-center mb-4">
+        <i class="bi bi-search fs-3 me-3"></i>
+        <h3 class="mb-0 mt-1">Search</h3>
+    </div>
+
+    <div class="d-flex justify-content-center alignin-items-center">
+        <input
+            maxlength="30"
+            id="searchBar"
+            type="text"
+            name="username"
+            class="form-control mb-5"
+            placeholder="Enter username"
+            required
+        />
+    </div>
+
+    <div id="resultsParent"></div>
+</div>
+{% endblock %} {% block js %}
+<script>
+    function loadProfiles(profiles, length) {
+        for (let i = 0; i < length; i++) {
+            $("#resultsParent").append(`
+            <a href="/profile?id=${profiles[i].id }" class="text-decoration-none text-reset">
+            <div
+                class="py-2 px-3 shadow-sm border-bottom border-primary mb-2 d-flex justify-content-between align-items-center rounded"
+            >
+                <img
+                    src="${profiles[i].profile_picture || "https://images.pexels.com/photos/1276518/pexels-photo-1276518.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}"
+                    width="60"
+                    height="60"
+                    class="rounded-pill"
+                    style="aspect-ratio: 1; object-position: center; object-fit: cover"
+                    alt="Profile Picture"
+                    loading="lazy"
+                />
+                <div>
+                    <h5 class="d-block m-0">${profiles[i].username}</h5>
+                    <p class="d-block m-0">${profiles[i].first_name} ${profiles[i].last_name}</p>
+                </div>
+            </div>
+        </a>
+      `);
+        }
+    }
+
+    $("#searchBar").on("keyup", function () {
+        $("#resultsParent").empty();
+        let value = $(this).val();
+        if (value.length > 2) {
+
+            $.ajax({
+                type: "POST",
+                data: { username: value },
+                url: "search/get",
+                async: true,
+                success: function (response) {
+                    response = JSON.parse(response);
+
+                    if (response.length > 0) {
+                        loadProfiles(response, response.length);
+                    }
+                },
+            });
+        }
+    });
+</script>
+{% endblock %}

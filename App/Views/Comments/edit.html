@@ -1,0 +1,33 @@
+{% extends "layout/mainLayout.html" %} {% block title %} Instakilogram - Edit
+Post {% endblock %} {% block content %}
+
+{% include "layout/backButton.html" %}
+
+<div class="container my-5 py-5">
+    <div class="d-flex align-items-center mb-4">
+        <i class="bi bi-pencil-fill fs-3 me-3"></i>
+        <h3 class="mb-0 mt-1">Edit Comment</h3>
+    </div>
+
+    <form method="post" action="/comments/update">
+        <div class="mb-3">
+            <label for="comment-content" class="form-label">Content</label>
+            <input
+                type="text"
+                class="form-control"
+                id="comment-content"
+                name="content"
+                placeholder="Enter content"
+                value="{{ comment.content }}"
+                maxlength="255"
+                required
+            />
+
+        </div>
+            <input type="hidden" name="id" value="{{ comment.id }}">
+            <button type="submit" class="btn btn-primary px-4">Submit</button>
+        </form>
+    </form>
+</div>
+
+{% endblock %}

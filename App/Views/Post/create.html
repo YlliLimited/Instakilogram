@@ -1,0 +1,53 @@
+{% extends "layout/mainLayout.html" %} {% block title %} Instakilogram - Create
+Post {% endblock %} {% block content %}
+
+{% include "layout/backButton.html" %}
+<div class="container my-5 py-5">
+    <div class="d-flex align-items-center mb-4">
+        <i class="bi bi-plus-circle-fill fs-3 me-3"></i>
+        <h3 class="mb-0 mt-1">Create Post</h3>
+    </div>
+
+    <form method="post" action="/post/store" enctype="multipart/form-data">
+        <input type="hidden" name="user_id" value="{{session.user.id}}">
+        <div class="mb-3">
+            <label class="form-label">Photo</label>
+            <label for="post-photo" class="btn border w-100 text-start">
+                <span class="d-flex align-items-center justify-content-start">
+                    <i class="bi bi-image me-3"></i>
+                    Choose Photo
+                </span>
+            </label>
+            <input
+                type="file"
+                id="post-photo"
+                class="form-control visually-hidden"
+                name="photo"
+                placeholder="Select File"
+                required
+            />
+        </div>
+        <div class="mb-3">
+            <label for="post-caption" class="form-label">Caption</label>
+            <textarea
+                class="form-control"
+                id="post-caption"
+                name="caption"
+                placeholder="Enter caption"
+                rows="3"
+                maxlength="65535"
+                required
+            ></textarea>
+        </div>
+
+        <div
+            class="d-flex justify-content-center align-items-center mb-3"
+        >
+            <p class="mb-0 me-2 text-danger">{{ message }}</p>
+        </div>
+            <button type="submit" class="btn btn-primary px-4">Submit</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

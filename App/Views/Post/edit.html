@@ -1,0 +1,35 @@
+{% extends "layout/mainLayout.html" %} {% block title %} Instakilogram - Edit
+Post {% endblock %} {% block content %}
+
+{% include "layout/backButton.html" %}
+<div class="container my-5 py-5">
+    <div class="d-flex align-items-center mb-4">
+        <i class="bi bi-pencil-fill fs-3 me-3"></i>
+        <h3 class="mb-0 mt-1">Edit Post</h3>
+    </div>
+
+    <form action="/post/update" method="post">
+        <div class="mb-3">
+            <label for="post-caption" class="form-label">Caption</label>
+            <textarea
+                class="form-control"
+                id="post-caption"
+                name="caption"
+                placeholder="Enter caption"
+                rows="3"
+                maxlength="65535"
+                required
+            >
+        {{post.caption}}
+      </textarea
+            >
+        </div>
+
+        <div class="btn-group mt-4">
+            <input type="hidden" name="id" value="{{post.id}}" />
+            <button type="submit" class="btn btn-primary px-4 rounded-start">Submit</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

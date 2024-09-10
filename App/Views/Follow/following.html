@@ -1,0 +1,95 @@
+{% extends "layout/mainLayout.html" %} {% block title %} Instakilogram -
+Following {% endblock %} {% block content %}
+
+{% include "layout/backButton.html" %}
+<div class="container my-5 py-5">
+    <div class="d-flex align-items-center mb-4">
+        <i class="bi bi-person-circle fs-3 me-3"></i>
+        <h3 class="mb-0 mt-1">Following</h3>
+    </div>
+
+    {% for following in followings %}
+
+    <a
+        href="/profile?id={{following.id}}"
+        class="text-decoration-none text-reset"
+    >
+        <div
+            class="py-2 px-3 shadow-sm border-bottom border-primary mb-2 d-flex justify-content-between align-items-center rounded"
+        >
+            <div class="d-flex align-items-center justify-content-center">
+                {% if following.profile_picture %}
+                <img
+                    src="{{following.profile_picture}}"
+                    width="60"
+                    width="60"
+                    height="60"
+                    style="aspect-ratio: 1; object-position: center; object-fit: cover"
+                    class="rounded-pill"
+                    alt="Profile Picture"
+                    loading="lazy"
+                />
+                {% else %}
+                <img
+                    src="https://images.pexels.com/photos/1276518/pexels-photo-1276518.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    width="60"
+                    width="60"
+                    height="60"
+                    style="aspect-ratio: 1; object-position: center; object-fit: cover"
+                    class="rounded-pill"
+                    alt="Profile Picture"
+                    loading="lazy"
+                />
+                {% endif %}
+                <div class="ms-3">
+                    <h5 class="d-block m-0">
+                        @{{following.username}}
+                    </h5>
+                    <p class="d-block m-0">
+                        {{following.fist_name}} {{following.last_name}}
+                    </p>
+                </div>
+            </div>
+
+            {% if not isNotMe %}
+            <form method="POST" class="removeForm">
+                <input type="hidden" name="id" value="{{following.id}}" />
+                <button
+                    type="submit"
+                    class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0"
+                >
+                    <span class="d-flex align-items-center">
+                        <i class="bi bi-trash-fill me-2"></i>
+                        <span class="small">Unfollow</span>
+                    </span>
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </a>
+
+    {% endfor %}
+</div>
+{% endblock %} {% block js %}
+<script>
+    const following = document.getElementsByClassName("removeForm");
+    const followingArray = Array.from(following);
+
+    followingArray.forEach((element) => {
+        element.addEventListener("submit", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            this.parentElement.remove();
+
+            var formData = $(this).serialize();
+            $.ajax({
+                type: "POST",
+                url: "following/remove",
+                data: formData,
+                async: true,
+                success: function (response) {},
+            });
+        });
+    });
+</script>
+{% endblock %}

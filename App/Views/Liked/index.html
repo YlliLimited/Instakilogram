@@ -1,0 +1,32 @@
+{% extends "layout/mainLayout.html" %} {% block title %} Instakilogram - Profile
+{% endblock %} {% block content %}
+
+{% include "layout/backButton.html" %}
+<div class="container my-5 py-5">
+    <div class="d-flex align-items-center mb-4">
+        <i class="bi bi-heart-fill fs-3 me-3"></i>
+        <h3 class="mb-0 mt-1">Liked Posts</h3>
+    </div>
+
+    <hr class="my-4 border-primary" />
+
+    <div class="d-flex justify-content-start align-items-center flex-wrap">
+
+        {% for likedPost in likedPosts %}
+        <div class="p-2" style="width: 33.33333%; aspect-ratio: 1">
+            <a href="/post/view?id={{ likedPost.id }}">
+                <img
+                    src="{{ likedPost.photo }}"
+                    alt="Post"
+                    loading="lazy"
+                    style="aspect-ratio: 1; object-position: center; object-fit: cover"
+                    class="w-100"
+                    style="object-fit: cover; aspect-ratio: 1"
+                />
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

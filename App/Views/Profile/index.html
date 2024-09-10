@@ -1,0 +1,177 @@
+{% extends "layout/mainLayout.html" %} {% block title %} Instakilogram - Profile
+{% endblock %} {% block content %} {% if not isMe %} {% include
+"layout/backButton.html" %} {% endif %}
+<div class="container my-5 py-5">
+    <div class="d-flex justify-content-center flex-column flex-md-row">
+        <div class="p-4 d-flex justify-content-center align-items-center">
+            {% if user.profile_picture %}
+            <img
+                src="{{ user.profile_picture }}"
+                alt="Profile Picture"
+                class="rounded-pill w-100 shadow-sm"
+                style="
+                    object-fit: cover;
+                    aspect-ratio: 1;
+                    min-width: 200px;
+                    min-height: 200px;
+                    max-width: 15vw;
+                    max-height: 15vw;
+                "
+                loading="lazy"
+            />
+            {% else %}
+            <img
+                src="https://images.pexels.com/photos/1276518/pexels-photo-1276518.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                alt="Profile Picture"
+                class="rounded-pill w-100 shadow-sm"
+                style="
+                    object-fit: cover;
+                    aspect-ratio: 1;
+                    min-width: 200px;
+                    min-height: 200px;
+                    max-width: 15vw;
+                    max-height: 15vw;
+                "
+                loading="lazy"
+            />
+            {% endif %}
+        </div>
+        <div class="p-4 d-flex justify-content-start align-items-center">
+            <div>
+                <h4 class="text-muted mb-3">@{{user.username}}</h4>
+                <div class="d-flex justify-content-start align-items-center">
+                    <span class="me-4">{{ user.posts.count }} posts</span>
+                    <span class="me-4">
+                        {% if isMe %}
+                        <a
+                            href="followers"
+                            class="text-reset text-decoration-none"
+                            >{{ numFollowers }} followers</a
+                        >
+                        {% else %}
+                        <a
+                            href="followers?id={{ user.id }}"
+                            class="text-reset text-decoration-none"
+                            >{{ numFollowers }} followers</a
+                        >
+                        {% endif %}
+                    </span>
+                    <span class="me-4"
+                        >{% if isMe %}
+                        <a
+                            href="following"
+                            class="text-reset text-decoration-none"
+                            >{{ numFollowing }} following</a
+                        >
+                        {% else %}
+                        <a
+                            href="following?id={{ user.id }}"
+                            class="text-reset text-decoration-none"
+                            >{{ numFollowing }} following</a
+                        >
+                        {% endif %}</span
+                    >
+                </div>
+                <h6 class="text-muted mt-4">
+                    {{ user.first_name }} {{ user.last_name }}
+                </h6>
+                <small class="d-block" style="max-width: 55ch">
+                    {{ user.bio }}</small
+                >
+
+                <div
+                    class="btn-group mt-4"
+                    role="group"
+                    aria-label="Basic example"
+                >
+                    {% if isMe %}
+                    <a
+                        href="/liked/posts"
+                        type="button"
+                        class="btn btn-outline-primary"
+                        >Liked</a
+                    >
+                    <a
+                        href="post/create"
+                        type="button"
+                        class="btn btn-primary rounded-end"
+                        >Create</a
+                    >
+                    <a href="settings" type="button" class="btn btn-white"
+                        ><i class="bi bi-gear-fill"></i
+                    ></a>
+                    {% else %} {% if not amFollowing %}
+                    <a
+                        href="/follow?id={{user.id}}"
+                        type="button"
+                        class="btn btn-primary"
+                        >Follow</a
+                    >
+                    {% else %}
+                    <form method="POST" class="unfollowForm">
+                        <input type="hidden" name="id" value="{{user.id}}" />
+                        <button
+                            type="submit"
+                            class="btn btn-outline-primary"
+                        >
+                            Unfollow
+                        </button>
+                    </form>
+
+                    {% endif %} {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="mt-4 border-primary" />
+
+    <div class="d-flex justify-content-start align-items-center flex-wrap">
+        {% for post in user.posts|reverse %}
+        <div class="p-2" style="width: 33.33333%; aspect-ratio: 1">
+            <a href="post/view?id={{post.id}}" class="profilePost d-flex justify-content-center align-items-center">
+                <img
+                    src="{{post.photo}}"
+                    alt="Post"
+                    loading="lazy"
+                    class="w-100"
+                    style="
+                        aspect-ratio: 1;
+                        object-position: center;
+                        object-fit: cover;
+                    "
+                />
+                <h2 class="viewPost shadow-lg position-absolute text-white font-monospace">View Post</h2>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block js %}
+<script>
+    const followers = document.getElementsByClassName("unfollowForm");
+    const followersArray = Array.from(followers);
+
+    followersArray.forEach((element) => {
+        element.addEventListener("submit", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            var formData = $(this).serialize();
+            $.ajax({
+                type: "POST",
+                url: "following/remove",
+                data: formData,
+                async: true,
+                success: function (response) {},
+            });
+
+            window.location.reload();
+        });
+    });
+</script>
+{% endblock %}

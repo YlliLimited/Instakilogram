@@ -1,0 +1,22 @@
+<div
+    class="d-flex align-items-center justify-content-center position-fixed"
+    style="top: 5em; left: 0.5em;"
+>
+    <button
+        class="btn btn-outline-primary rounded rounded-pill"
+        type="button"
+        id="backButton"
+    >
+        <i class="bi bi-arrow-left-circle-fill"></i>
+    </button>
+</div>
+
+{% block js %}
+
+<script>;
+    document.getElementById("backButton").addEventListener("click", () => {
+        window.history.back();
+    });
+</script>
+
+{% endblock %}

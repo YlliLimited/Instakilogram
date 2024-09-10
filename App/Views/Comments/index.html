@@ -1,0 +1,99 @@
+{% extends "layout/mainLayout.html" %} {% block title %} Instakilogram - View
+Comments {% endblock %} {% block content %} {% include "layout/backButton.html"
+%}
+<div class="container my-5 py-5">
+    <div class="d-flex align-items-center mb-4">
+        <i class="bi bi-chat fs-3 me-3"></i>
+        <h3 class="mb-0 mt-1">Comments</h3>
+    </div>
+
+    {% for comment in comments %}
+
+    <div
+        class="py-2 px-3 shadow-sm border-bottom border-primary mb-2 d-flex justify-content-between align-items-center rounded"
+    >
+        <a href="/profile?id={{comment.user.id}}" class="text-decoration-none text-reset">
+            <div class="d-flex justify-content-center align-items-center">
+                {% if comment.user.profile_picture %}
+                <img
+                    src="{{comment.user.profile_picture}}"
+                    width="50"
+                    height="50"
+                    class="rounded-pill me-3"
+                    style="
+                        aspect-ratio: 1;
+                        object-position: center;
+                        object-fit: cover;
+                    "
+                    alt="Profile Picture"
+                    loading="lazy"
+                />
+                {% else %}
+                <img
+                    src="https://images.pexels.com/photos/1276518/pexels-photo-1276518.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    width="50"
+                    height="50"
+                    class="rounded-pill me-3"
+                    style="
+                        aspect-ratio: 1;
+                        object-position: center;
+                        object-fit: cover;
+                    "
+                    alt="Profile Picture"
+                    loading="lazy"
+                />
+                {% endif %}
+
+                <span>
+                    <small class="text-muted d-block"
+                        ><b>{{comment.user.username}}</b> {{
+                        comment.content }}</small
+                    >
+                    <small class="text-muted">{{ comment.created_at }}</small>
+                </span>
+            </div>
+        </a>
+
+        {% if comment.user_id == session.user.id %}
+        <div class="d-flex justify-content-between align-items-center">
+            <form method="post" action="/comments/edit?id={{comment.id}}">
+                <button type="submit" class="btn p-0 me-3">
+                    <i class="bi bi-pencil-fill"></i>
+                </button>
+            </form>
+            <form class="deleteForm">
+                <input type="hidden" name="id" value="{{comment.id}}" />
+                <button type="submit" class="btn p-0">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %} {% block js %}
+<script>
+    const comments = document.getElementsByClassName("deleteForm");
+    const commentsArray = Array.from(comments);
+
+    if (commentsArray.length > 0) {
+        commentsArray.forEach((element) => {
+            element.addEventListener("submit", function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                this.parentElement.parentElement.remove();
+
+                var formData = $(this).serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "/comments/delete",
+                    data: formData,
+                    async: true,
+                    success: function (response) {},
+                });
+            });
+        });
+    }
+</script>
+{% endblock %}

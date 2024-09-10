@@ -1,0 +1,199 @@
+{% extends "layout/baseLayout.html" %} {% block title %} Instakilogram - Sign Up
+{% endblock %} {% block body %}
+
+<section>
+    <div class="container py-5 h-100">
+        <div class="row d-flex align-items-center justify-content-center h-100">
+            <div class="col-md-8 col-lg-7 col-xl-6">
+                <img
+                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+                    class="img-fluid"
+                    alt="Phone image"
+                    loading="lazy"
+                />
+            </div>
+            <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1 mt-4 mt-lg-0">
+                <form method="post" action="/signup/handler" enctype="multipart/form-data">
+                    <div class="d-flex justify-content-center align-items-top">
+                        <img
+                            style="height: 40px; margin-right: 10px"
+                            src="/Assets/Images/logo.svg"
+                            alt="Instakilogram logo"
+                            loading="lazy"
+                        />
+                        <h1>Insta<span class="text-primary">kilogram</span></h1>
+                    </div>
+
+                    <hr />
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div data-mdb-input-init class="form-outline mb-3">
+                                <label class="form-label" for="form1Example1"
+                                    >First Name</label
+                                >
+                                <input
+                                    maxlength="30"
+                                    type="text"
+                                    name="first_name"
+                                    id="form1Example1"
+                                    class="form-control form-control-lg"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div data-mdb-input-init class="form-outline mb-3">
+                                <label class="form-label" for="form1Example2"
+                                    >Last name</label
+                                >
+                                <input
+                                    maxlength="30"
+                                    type="text"
+                                    name="last_name"
+                                    id="form1Example2"
+                                    class="form-control form-control-lg"
+                                    required
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div data-mdb-input-init class="form-outline mb-3">
+                                <label class="form-label" for="usernameid"
+                                    >Username</label
+                                >
+                                <input
+                                    maxlength="30"
+                                    type="text"
+                                    name="username"
+                                    id="usernameid"
+                                    class="form-control form-control-lg"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div data-mdb-input-init class="form-outline mb-3">
+                                <label class="form-label">Gender</label>
+                                <select
+                                    required
+                                    class="form-control form-control-lg"
+                                    name="gender"
+                                    aria-label="Default select example"
+                                >
+                                    <option value="">Select</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email input -->
+                    <div data-mdb-input-init class="form-outline mb-3">
+                        <label class="form-label" for="form1Example13"
+                            >Email</label
+                        >
+                        <input
+                            maxlength="50"
+                            type="email"
+                            name="email"
+                            id="form1Example13"
+                            class="form-control form-control-lg"
+                            required
+                        />
+                    </div>
+
+                    <!-- Password input -->
+                    <div data-mdb-input-init class="form-outline mb-3">
+                        <label class="form-label" for="form1Example23"
+                            >Password</label
+                        >
+                        <input
+                            maxlength="255"
+                            type="password"
+                            name="password"
+                            id="form1Example23"
+                            class="form-control form-control-lg"
+                            required
+                        />
+                    </div>
+
+                    <!-- Profile Picture input -->
+                    <div data-mdb-input-init class="form-outline mb-3">
+                        <label class="form-label" for="profile_picture"
+                            >Profile Picture (optional):</label
+                        >
+                        <br>
+                        <label for="profile_picture" class="btn btn-lg border w-100 text-start">
+                            <span class="d-flex align-items-center justify-content-start">
+                                <i class="bi bi-image me-3"></i>
+                                Choose Photo
+                            </span>
+                        </label>
+                        <input
+                            type="file"
+                            name="profile_picture"
+                            id="profile_picture"
+                            class="form-control form-control-lg visually-hidden"
+                        />
+                    </div>
+
+                    <!-- Bio textarea -->
+                    <div data-mdb-input-init class="form-outline mb-3">
+                        <label class="form-label" for="bioform"
+                            >Bio (optional):</label
+                        >
+                        <textarea
+                            name="bio"
+                            id="bioform"
+                            class="form-control"
+                            maxlength="150"
+                            rows="3"
+                        >
+                        </textarea>
+                    </div>
+
+                    <div
+                        class="d-flex justify-content-center align-items-center mb-3"
+                    >
+                        <p class="mb-0 me-2 text-danger">{{ message }}</p>
+                    </div>
+
+                    <!-- Submit button -->
+                    <div
+                        class="btn-group d-flex"
+                        role="group"
+                        aria-label="Basic example"
+                    >
+                        <button
+                            type="submit"
+                            data-mdb-button-init
+                            data-mdb-ripple-init
+                            class="btn btn-primary mb-3 btn-lg"
+                        >
+                            Sign Up
+                        </button>
+
+                        <a
+                            href="/"
+                            data-mdb-button-init
+                            data-mdb-ripple-init
+                            class="btn btn-outline-primary mb-3 btn-lg"
+                            >Cancel</a
+                        >
+                    </div>
+
+                    <p class="d-inline">Already have an account?</p>
+                    <a class="d-inline" href="/login">Log In</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

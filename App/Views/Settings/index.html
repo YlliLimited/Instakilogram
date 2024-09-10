@@ -1,0 +1,301 @@
+{% extends "layout/mainLayout.html" %} {% block title %} Instakilogram -
+Settings {% endblock %} {% block content %}
+
+
+{% include "layout/backButton.html" %}
+<!-- Modal -->
+<div
+    class="modal fade"
+    id="deleteModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                    Delete Account
+                </h1>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete your accont? All of your data
+                will be deleted.
+            </div>
+            <div class="modal-footer">
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-bs-dismiss="modal"
+                >
+                    Close
+                </button>
+                <a href="/user/delete" class="btn btn-outline-danger">
+                    <span class="d-flex align-items-center">
+                        <i class="bi bi-trash-fill me-2"></i>
+                        <span class="small">Delete</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5 py-5">
+    <div class="row gutters">
+        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 mt-3 mt-lg-0">
+            <div class="card">
+                <div class="card-body">
+                    <div class="account-settings">
+                        <div class="user-profile">
+                            <div class="user-avatar">
+                                {% if session.user.profile_picture %}
+                                <img
+                                    src="{{ session.user.profile_picture }}"
+                                    style="aspect-ratio: 1; object-position: center; object-fit: cover"
+                                    alt="Profile Picture"
+                                    loading="lazy"
+                                />
+                                {% else %} <img
+                                src="https://images.pexels.com/photos/1276518/pexels-photo-1276518.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1""
+                                style="aspect-ratio: 1; object-position: center; object-fit: cover"
+                                alt="Profile Picture" loading="lazy" /> {% endif
+                                %}
+                            </div>
+                            <h5 class="user-name">
+                                {{ session.user.first_name }} {{
+                                session.user.last_name }}
+                            </h5>
+                            <h6 class="user-email">
+                                @{{ session.user.username }}
+                            </h6>
+                        </div>
+                        <div class="about">
+                            <h5 class="mb-2 text-primary">Bio</h5>
+                            <p>{{ session.user.bio|default('No bio') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-3">
+                <div class="card-body">
+                    <div
+                        class="d-flex align-items-center justify-content-center"
+                    >
+                        <div class="btn-group w-100">
+                            <a
+                                href="/signout/handler"
+                                class="btn btn-primary rounded-start me-1"
+                            >
+                                Sign out
+                            </a>
+                            <button
+                                type="button"
+                                class="btn btn-outline-danger rounded-end"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteModal"
+                            >
+                                <span
+                                    class="d-flex align-items-center justify-content-center"
+                                >
+                                    <i class="bi bi-trash-fill me-2"></i>
+                                    <span class="small">Delete Account</span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12 mt-3 mt-lg-0">
+            <div class="card h-100">
+                <form method="POST" action="/user/edit" class="card-body">
+                    <div class="d-flex align-items-center mb-4">
+                        <i class="bi bi-pencil-fill fs-4 me-3"></i>
+                        <h4 class="mb-0 mt-1">Edit Profile</h4>
+                    </div>
+
+                    <div class="row gutters">
+                        <div class="col-md-6">
+                            <div data-mdb-input-init class="form-outline mb-3">
+                                <label class="form-label" for="form1Example1"
+                                    >First Name</label
+                                >
+                                <input
+                                    maxlength="30"
+                                    type="text"
+                                    name="first_name"
+                                    id="form1Example1"
+                                    class="form-control"
+                                    value="{{ session.user.first_name }}"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div data-mdb-input-init class="form-outline mb-3">
+                                <label class="form-label" for="form1Example2"
+                                    >Last name</label
+                                >
+                                <input
+                                    maxlength="30"
+                                    type="text"
+                                    name="last_name"
+                                    id="form1Example2"
+                                    class="form-control"
+                                    value="{{ session.user.last_name }}"
+                                    required
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div data-mdb-input-init class="form-outline mb-3">
+                                <label class="form-label" for="usernameid"
+                                    >Username</label
+                                >
+                                <input
+                                    maxlength="30"
+                                    type="text"
+                                    name="username"
+                                    id="usernameid"
+                                    class="form-control"
+                                    value="{{ session.user.username }}"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div data-mdb-input-init class="form-outline mb-3">
+                                <label class="form-label">Gender</label>
+                                <select
+                                    required
+                                    class="form-control text-capitalize"
+                                    name="gender"
+                                    aria-label="Default select example"
+                                >
+                                    <option value="{{ session.user.gender }}">
+                                        {{ session.user.gender }}
+                                    </option>
+
+                                    {% if session.user.gender != "male" %}
+                                    <option value="male">Male</option>
+                                    {% endif %} {% if session.user.gender !=
+                                    "female" %}
+                                    <option value="female">Female</option>
+                                    {% endif %} {% if session.user.gender !=
+                                    "other" %}
+                                    <option value="other">Other</option>
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email input -->
+                    <div data-mdb-input-init class="form-outline mb-3">
+                        <label class="form-label" for="form1Example13"
+                            >Email</label
+                        >
+                        <input
+                            maxlength="50"
+                            type="email"
+                            name="email"
+                            id="form1Example13"
+                            class="form-control"
+                            value="{{ session.user.email }}"
+                            required
+                        />
+                    </div>
+
+                    <!-- Password input -->
+                    <div data-mdb-input-init class="form-outline mb-3">
+                        <label class="form-label" for="form1Example23"
+                            >Password</label
+                        >
+                        <input
+                            maxlength="255"
+                            type="password"
+                            name="password"
+                            id="form1Example23"
+                            class="form-control"
+                            value="{{ session.user.password }}"
+                            required
+                        />
+                    </div>
+
+                    <div data-mdb-input-init class="form-outline mb-3">
+                        <label class="form-label" for="form1Example13"
+                            >Bio</label
+                        >
+                        <textarea
+                            name="bio"
+                            id="form1Example13"
+                            class="form-control"
+                            maxlength="150"
+                            rows="3"
+                        >
+                            {{ session.user.bio|trim }}
+                        </textarea>
+                    </div>
+
+                    <div data-mdb-input-init class="form-outline mb-3">
+                        <p class="text-danger">{{ message }}</p>
+                    </div>
+
+                    <div class="row">
+                        <div
+                            class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                        >
+                            <div class="btn-group mt-3">
+                                <button
+                                    type="submit"
+                                    data-mdb-button-init
+                                    data-mdb-ripple-init
+                                    class="btn btn-primary"
+                                >
+                                    Update
+                                </button>
+
+                                <a
+                                    href="profile"
+                                    data-mdb-button-init
+                                    data-mdb-ripple-init
+                                    class="btn btn-outline-primary"
+                                    >Cancel</a
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-5 border-primary" />
+
+
+    <div class="d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Change Color Theme</h5>
+        <form action="/settings/edit-theme" method="post" class="d-flex align-items-center justify-content-center">
+            <select name="theme" class="form-select me-2" required>
+                <option value="">Select</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Change</button>
+        </form>
+    </div>
+    
+
+</div>
+
+{% endblock %}
